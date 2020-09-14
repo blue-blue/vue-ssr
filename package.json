@@ -1,5 +1,5 @@
 {
-  "name": "vue-webpack",
+  "name": "vue-ssr",
   "sideEffects": [
     "*.css",
     "*.scss"
@@ -29,6 +29,9 @@
     "clean-webpack-plugin": "^3.0.0",
     "cross-env": "^7.0.2",
     "css-loader": "^4.2.2",
+    "eslint": "^7.9.0",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-vue": "^6.2.2",
     "file-loader": "^6.1.0",
     "html-webpack-plugin": "^4.4.1",
     "mini-css-extract-plugin": "^0.11.1",

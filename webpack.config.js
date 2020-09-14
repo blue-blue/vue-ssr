@@ -36,7 +36,8 @@ const config = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js'
+    filename: '[name].js',
+    chunkFilename: '[name].js'
   },
   resolve: {
     extensions: ['.vue', '.js'],
@@ -47,13 +48,26 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/i,
+        test: /\.(vue|js|jsx)$/i,
         exclude: /node_modules/,
-        use: ['babel-loader']
+        use: [
+          {
+            loader: 'eslint-loader',
+            options: {
+              fix: true, // 轻微的错误eslint自动修复
+              enforce: 'pre' // 强制eslint先执行
+            }
+          }
+        ]
       },
       {
-        test: /\.vue$/i,
-        use: 'vue-loader'
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'bebel-loader'
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
       },
       {
         test: /\.(jpg|jpeg|png|git|svg)$/i,
@@ -109,7 +123,7 @@ const config = {
       name: 'runtime'
     },
     splitChunks: {
-      chunks: 'all',
+      chunks: 'all', // 同步/异步都分割代码
       cacheGroups: {
         vendors: {
           test: /[\\/]node_modules[\\/]/,
@@ -130,7 +144,7 @@ if (isDev) {
     port: 3000, // 端口
     host: '0.0.0.0', // 设置服务器的ip地址，默认localhost
     hot: true,
-    overlay: { errors: true } // 浏览器显示错误层
+    overlay: true // 浏览器显示错误层
   }
 
   config.plugins.push(
@@ -145,13 +159,18 @@ if (isDev) {
   config.plugins.push(
     new MiniCssExtractPlugin({
       filename: '[name][hash:8].css',
-      chunkFilename: '[name][hash:8].chunk.css'
+      // chunkFilename: '[name][hash:8].chunk.css'
+      chunkFilename: '[id][hash:8].css'
     })
   )
   Object.assign(config.optimization, {
     minimize: true,
     minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})]
   })
+  config.output = {
+    filename: '[name].[contenthash].js',
+    chunkFilename: '[name].[contenthash].js'
+  }
 }
 
 module.exports = config
