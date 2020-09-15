@@ -7,9 +7,9 @@
   </div>
 </template>
 <script>
-import Header from './views/Header'
-import Footer from './views/Footer.jsx'
-import Todo from './views/Todo'
+import Header from './layout/Header'
+import Footer from './layout/Footer.jsx'
+import Todo from './views/todo/Todo'
 export default {
   name: 'Home',
   components: {

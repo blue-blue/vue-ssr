@@ -76,10 +76,10 @@ export default {
   padding-left: 5px;
   cursor: pointer;
   &::after {
-    content: url('../assets/images/round.png');
+    content: url('../../assets/images/round.png');
   }
   &:checked::after {
-    content: url('../assets/images/done.png');
+    content: url('../../assets/images/done.png');
   }
 }
 .destroy {

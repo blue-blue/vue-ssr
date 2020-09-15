@@ -32,7 +32,7 @@ const config = {
   mode: isDev ? 'development' : 'production',
   devtool: isDev ? 'cheap-module-eval-source-map' : false,
   entry: {
-    app: './src/index.js'
+    main: './src/index.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -48,7 +48,7 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.(vue|js|jsx)$/i,
+        test: /\.(js|jsx)$/i,
         exclude: /node_modules/,
         use: [
           {
@@ -61,9 +61,9 @@ const config = {
         ]
       },
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'bebel-loader'
+        loader: 'babel-loader'
       },
       {
         test: /\.vue$/,
@@ -123,14 +123,7 @@ const config = {
       name: 'runtime'
     },
     splitChunks: {
-      chunks: 'all', // 同步/异步都分割代码
-      cacheGroups: {
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          priority: -10,
-          name: 'vendors'
-        }
-      }
+      chunks: 'all' // 同步/异步都分割代码
     }
   }
 }
@@ -147,10 +140,7 @@ if (isDev) {
     overlay: true // 浏览器显示错误层
   }
 
-  config.plugins.push(
-    new Webpack.HotModuleReplacementPlugin(),
-    new Webpack.NoEmitOnErrorsPlugin()
-  )
+  config.plugins.push(new Webpack.HotModuleReplacementPlugin())
   Object.assign(config.optimization, {
     usedExports: true // Tree Shaking, production模式下自带了Tree Shaking
   })
@@ -158,9 +148,8 @@ if (isDev) {
   // 生产环境
   config.plugins.push(
     new MiniCssExtractPlugin({
-      filename: '[name][hash:8].css',
-      // chunkFilename: '[name][hash:8].chunk.css'
-      chunkFilename: '[id][hash:8].css'
+      filename: '[name].[hash].css',
+      chunkFilename: '[name].[hash].chunk.css'
     })
   )
   Object.assign(config.optimization, {
@@ -169,7 +158,7 @@ if (isDev) {
   })
   config.output = {
     filename: '[name].[contenthash].js',
-    chunkFilename: '[name].[contenthash].js'
+    chunkFilename: '[name].[contenthash].chunk.js'
   }
 }
 
